@@ -1,7 +1,29 @@
 import sys
+from queue import Queue
+from collections import OrderedDict
 
 def fifo(k, requests):
-    pass
+    # To quickly check if item is present in cache
+    s = set()
+
+    # Cache with FIFO policy
+    cache = Queue()
+
+    number_of_misses = 0
+
+    for request in requests:
+        if request not in s: # Cache miss
+            if len(s) == k: # If full, evict
+                evict = cache.get()
+                s.remove(evict)
+
+            number_of_misses += 1
+            # Insert item
+            cache.put(request)
+            s.add(request)
+
+    return number_of_misses
+
 
 def lru(k, requests):
     pass
