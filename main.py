@@ -26,10 +26,30 @@ def fifo(k, requests):
 
 
 def lru(k, requests):
-    pass
+    # In order from least recently used to most recently used
+    cache = OrderedDict()
+
+    number_of_misses = 0
+
+    for request in requests:
+        if request not in cache:
+            if len(cache) == k:
+                cache.popitem(last=False)  # Remove first item (least recently used)
+
+            number_of_misses += 1
+
+            # Insert item, arbitrary value
+            cache[request] = 0
+        else:
+            cache.move_to_end(request)  # End side is most recently used
+
+    return number_of_misses
+
 
 def optff(k, requests):
     pass
+
+
 
 def main():
     filename = sys.argv[1]
